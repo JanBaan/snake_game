@@ -1,61 +1,12 @@
-import pygame, sys, random
+import pygame, sys
+from snake import SNAKE
+from fruit import FRUIT
 from pygame.math import Vector2
-
-class SNAKE:
-    def __init__(self):
-        self.body = [Vector2(5,10), Vector2(4,10), Vector2(3,10)]
-        self.direction = Vector2(0,0)
-        self.new_block = False
-        self.crunc_sound = pygame.mixer.Sound('Sounds/crunch.wav')
-    
-    def draw_snakes(self):
-        for block in self.body:
-            x_pos = int(block.x * cell_size)
-            y_pos = int(block.y * cell_size)
-            snake_rect = pygame.Rect(x_pos, y_pos, cell_size, cell_size)
-            pygame.draw.rect(screen, pygame.Color('blue'), snake_rect)
-        
-    def move_snake(self):
-        if self.new_block == True:
-            body_copy = self.body[:]
-            body_copy.insert(0, body_copy[0] + self.direction)
-            self.body = body_copy[:]
-            self.new_block = False
-        else:
-            body_copy = self.body[:-1]
-            body_copy.insert(0, body_copy[0] + self.direction)
-            self.body = body_copy[:]
-        
-    def add_block(self):
-        self.new_block = True
-        
-    def play_crunch_sound(self):
-        self.crunc_sound.play()
-        
-    def reset(self):
-        self.body = [Vector2(5,10), Vector2(4,10), Vector2(3,10)]
-        self.direction = Vector2(0,0)
-        
-class FRUIT:
-    def __init__(self):
-        self.x = random.randint(0, cell_number - 1)
-        self.y = random.randint(0, cell_number - 1)
-        self.pos = Vector2(self.x, self.y)
-
-    def draw_fruit(self):
-        fruit_rect = pygame.Rect(int(self.pos.x * cell_size), int(self.pos.y * cell_size), cell_size, cell_size)
-        screen.blit(apple, fruit_rect)
-        #pygame.draw.rect(screen, pygame.Color('red'), fruit_rect)
-        
-    def randomize(self):
-        self.x = random.randint(0, cell_number - 1)
-        self.y = random.randint(0, cell_number - 1)
-        self.pos = Vector2(self.x, self.y)
 
 class MAIN:
     def __init__(self):
-        self.snake = SNAKE()
-        self.fruit = FRUIT()
+        self.snake = SNAKE(screen, cell_size)
+        self.fruit = FRUIT(screen, cell_number, cell_size, apple)
         
     def update(self):
         self.snake.move_snake()
